@@ -1,4 +1,4 @@
-# cenote
+![cenote](https://github.com/AuthEceSoftEng/cenote/blob/master/Cenote_colour_Horizontal.png)
 
 [cenote](https://en.wikipedia.org/wiki/Cenote) (Katavothra) is a Big Data Management System (BDMS) for event processing and analytics. Our goal was to build an open source equivalent of [keen.io](http://keen.io) analytics and learn about scalable systems in the process. The technology stack is based on:
 

@@ -10,3 +10,11 @@
 and inludes code from programming languages JavaScript, Java and Python.
 
 This is the logistics repository to hold issues, documentation, installation instructions and any code that is across cenote systems.
+
+# Tests
+
+To run the tests:
+
+1. Configure a .env file inside `remote-e2e-tests`
+2. Run `npm install`
+3. Run `npm test`

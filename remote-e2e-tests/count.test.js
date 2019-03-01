@@ -1,75 +1,34 @@
-const supertest = require('supertest');
-let request;
+require('dotenv').load();
+const request = require('supertest')(process.env.CENOTE_API_URL);
+const delay = require('delay');
 
-let WRITE_KEY; 
-let READ_KEY; 
-let PROJECT_ID;
-let timestamp;
+const { PROJECT_ID, CENOTE_WRITE_KEY, CENOTE_READ_KEY } = process.env;
+const NUM_OF_DOCS = 15;
 
-beforeAll(() => {
-    request = supertest(process.env.CENOTE_API_URL);
-    WRITE_KEY = process.env.CENOTE_WRITE_KEY;
-    READ_KEY= process.env.CENOTE_READ_KEY;
-    PROJECT_ID = process.env.PROJECT_ID;
-    timestamp = Date.now();
+describe('Adding documents', () => {
+  beforeAll(async () => {
+    const response = await request.delete(`/projects/${PROJECT_ID}/queries/testCleanup`);
+    expect(response.status).toBe(204);
+  });
+
+  afterAll(async () => {
+    const response = await request.delete(`/projects/${PROJECT_ID}/queries/testCleanup`);
+    expect(response.status).toBe(204);
+  });
+
+  test(`Add ${NUM_OF_DOCS} measurements`, async () => {
+    const payload = [];
+    for (let i = 0; i < NUM_OF_DOCS; i += 1) payload.push({ data: { a: i, b: i, c: i.toString() }, timestamp: Date.now() });
+    const response = await request.post(`/projects/${PROJECT_ID}/events/test?writeKey=${CENOTE_WRITE_KEY}`).send({ payload });
+    expect(response.status).toBe(202);
+    expect(response.body.length).toBe(NUM_OF_DOCS);
+  });
+
+  test(`Count ${NUM_OF_DOCS} measurements (after 3 seconds)`, async () => {
+    await delay(3000);
+    const response = await request.get(`/projects/${PROJECT_ID}/queries/count?event_collection=test&readKey=${CENOTE_READ_KEY}`);
+    expect(response.status).toBe(200);
+    expect(response.body.ok).toBe(true);
+    expect(response.body.results[0].count).toBe(NUM_OF_DOCS);
+  }, 35000);
 });
-
-test('Add 5 measurements', () => {
-    return request.post(`/projects/${process.env.PROJECT_ID}/events/test?writeKey=${WRITE_KEY}`)
-        .send({
-            payload : [{
-                data: {
-                    current: 7.60,
-                    voltage: 240,
-                    note: "That's weird."
-                },
-                timestamp: timestamp + (0 * 1000)
-            },{
-                data: {
-                    current: 7.9,
-                    voltage: 239,
-                    note: "That's weird."
-                },
-                timestamp: timestamp + (1 * 1000)
-            },{
-                data: {
-                    current: 7.8,
-                    voltage: 240.5,
-                    note: "That's weird."
-                },
-                timestamp: timestamp + (2 * 1000)
-            },{
-                data: {
-                    current: 7.57,
-                    voltage: 241,
-                    note: "That's weird."
-                },
-                timestamp: timestamp + (3 * 1000)
-            },{
-                data: {
-                    current: 7.56,
-                    voltage: 240.5,
-                    note: "That's weird."
-                },
-                timestamp: timestamp + (4 * 1000)
-            }]
-        })
-        .set('Accept', 'application/json')
-        .expect(202)
-        .then(response => {
-            expect(response.body.length).toBe(5);
-        })
-  });
-
-  test('Count 5 measurements', () => {
-    return request.get(`/projects/${PROJECT_ID}/queries/count?event_collection=test&readKey=${READ_KEY}`)
-        .set('Accept', 'application/json')
-        .expect(200)
-        .then(response => {
-            console.log(response.body);
-            expect(response.body.ok).toBe(true);
-            expect(response.body.results[0].count).toBe(5);
-        })
-  });
-
-  

@@ -4,12 +4,22 @@
 
 - Kafka
 - Storm
-- Cassandra
+- CockroachDB
 - MERN stack
 
 and inludes code from programming languages JavaScript, Java and Python.
 
 This is the logistics repository to hold issues, documentation, installation instructions and any code that is across cenote systems.
+
+# Repositories
+
+Since cenote is a distributed system it spans across 5 repositories:
+
+- [cenote](https://github.com/AuthEceSoftEng/cenote): This one, used for gathering all the issues related to cenote, hosting IaC files and containing installation instructions.
+- [cenote-api](): API server & web management client, used also for data reading.
+- [cenote-cockroach](https://github.com/AuthEceSoftEng/cenote-cockroach): Read/Write related code for CockroachDB.
+- [cenote-write](https://github.com/AuthEceSoftEng/cenote-write): Apache Storm topology used for data writing.
+- [cenote-read](https://github.com/AuthEceSoftEng/cenote-read): Apache Storm Topology used for querying data. (Obsolete, due to latencies in DRPC server, switched the reading to cenote-api).
 
 # Tests
 

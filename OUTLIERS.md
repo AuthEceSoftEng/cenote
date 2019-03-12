@@ -12,10 +12,10 @@ Cenote's online outlier detection technique will be based on the 2005 paper enti
 
 Write data:
 
-1. A numeric property is send to be written in Cenote.
-2. Use the numeric property to update running average and variance stored in a system like Redis.
-3a. If the numeric property is more extreme than the ODV (Outlier Detection Value) then continue with storage.
-3b. If the numeric property is not an outlier then update the 2nd pair of running average and variance.
+  1. A numeric property is send to be written in Cenote.
+  2. Use the numeric property to update running average and variance stored in a system like Redis.
+  3. If the numeric property is more extreme than the ODV (Outlier Detection Value) then continue with storage.
+  4. If the numeric property is not an outlier then update the 2nd pair of running average and variance.
 
 Read data:
 

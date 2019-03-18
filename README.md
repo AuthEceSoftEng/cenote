@@ -15,11 +15,15 @@ This is the logistics repository to hold issues, documentation, installation ins
 
 Since cenote is a distributed system it spans across 5 repositories:
 
-- [cenote](https://github.com/AuthEceSoftEng/cenote): This one, used for gathering all the issues related to cenote, hosting IaC files and containing installation instructions.
-- [cenote-api](): API server & web management client, used also for data reading.
+- [cenote](https://github.com/AuthEceSoftEng/cenote): This one, used for gathering all the issues related to cenote, hosting IaC files and containing installation instructions. 
+- [cenote-api](https://github.com/AuthEceSoftEng/cenote-api): API server & web management client, used also for data reading.
 - [cenote-cockroach](https://github.com/AuthEceSoftEng/cenote-cockroach): Read/Write related code for CockroachDB.
 - [cenote-write](https://github.com/AuthEceSoftEng/cenote-write): Apache Storm topology used for data writing.
 - [cenote-read](https://github.com/AuthEceSoftEng/cenote-read): Apache Storm Topology used for querying data. (Obsolete, due to latencies in DRPC server, switched the reading to cenote-api).
+
+# Installation
+
+Our (staging) demo server can be found [here](http://snf-843202.vm.okeanos.grnet.gr:3000/) along with the online [API docs](http://snf-843202.vm.okeanos.grnet.gr:3000/docs). *NB: Do not store operational data there...they will be lost.*
 
 # Tests
 

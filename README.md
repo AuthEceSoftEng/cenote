@@ -15,7 +15,7 @@ This is the logistics repository to hold issues, documentation, installation ins
 
 Since cenote is a distributed system it spans across 5 repositories:
 
-- [cenote](https://github.com/AuthEceSoftEng/cenote): This one, used for gathering all the issues related to cenote, hosting IaC files and containing installation instructions. 
+- [cenote](https://github.com/AuthEceSoftEng/cenote): This one, used for gathering all the issues related to cenote, hosting IaC files and containing installation instructions.
 - [cenote-api](https://github.com/AuthEceSoftEng/cenote-api): API server & web management client, used also for data reading.
 - [cenote-cockroach](https://github.com/AuthEceSoftEng/cenote-cockroach): Read/Write related code for CockroachDB.
 - [cenote-write](https://github.com/AuthEceSoftEng/cenote-write): Apache Storm topology used for data writing.
@@ -29,6 +29,6 @@ Our (staging) demo server can be found [here](http://snf-843202.vm.okeanos.grnet
 
 To run the tests:
 
-1. Configure a .env file inside `remote-e2e-tests`
-2. Run `npm install`
+1. Configure a .env file.
+2. Run `npm i`
 3. Run `npm test`

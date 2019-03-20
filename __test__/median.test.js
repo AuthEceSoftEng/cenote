@@ -5,7 +5,7 @@ const { PROJECT_ID, CENOTE_MASTER_KEY } = process.env;
 const { NUM_OF_DOCS } = global;
 
 const median = (arr) => {
-  if (arr.length === 0) return 0;
+  if (arr.length === 0) return null;
   arr.sort((a, b) => a - b);
   return arr[Math.ceil(arr.length / 2) - 1];
 };
@@ -13,25 +13,16 @@ const median = (arr) => {
 describe('Test /median route', () => {
   beforeAll(async () => {
     const response = await got.delete(`/projects/${PROJECT_ID}/queries/testCleanup`);
+    await delay(5000);
     expect(response.statusCode).toBe(204);
-    const theFirst = { payload: { data: { a: -1, b: -1, c: (-1).toString() } } };
-    const response2 = await got.post(`/projects/${PROJECT_ID}/events/test?masterKey=${CENOTE_MASTER_KEY}`, { body: theFirst });
-    expect(response2.statusCode).toBe(202);
-    expect(response2.body.length).toBe(1);
-    await delay(2000);
-  });
+  }, 10000);
 
-  afterAll(async () => {
-    const response = await got.delete(`/projects/${PROJECT_ID}/queries/testCleanup`);
-    expect(response.statusCode).toBe(204);
-  });
-
-  test(`add ${NUM_OF_DOCS} measurements to collection 'test' ( and wait ${Math.trunc(NUM_OF_DOCS / 7)} seconds )`, async () => {
+  test(`add ${NUM_OF_DOCS} measurements to collection 'test' ( and wait ${Math.trunc(NUM_OF_DOCS / 3)} seconds )`, async () => {
     const payload = [];
-    for (let i = 0; i < NUM_OF_DOCS; i += 1) payload.push({ data: { a: i, b: i, c: i.toString() } });
+    for (let i = 1; i < NUM_OF_DOCS + 1; i += 1) payload.push({ data: { a: i, b: i, c: i.toString() } });
     const body = { payload };
     const response = await got.post(`/projects/${PROJECT_ID}/events/test?masterKey=${CENOTE_MASTER_KEY}`, { body });
-    await delay(NUM_OF_DOCS * 200);
+    await delay(NUM_OF_DOCS * 300);
     expect(response.statusCode).toBe(202);
     expect(response.body.length).toBe(NUM_OF_DOCS);
   }, NUM_OF_DOCS * 400);
@@ -67,7 +58,7 @@ describe('Test /median route', () => {
     const response = await got.get(`/projects/${PROJECT_ID}/queries/median`, { query });
     expect(response.statusCode).toBe(200);
     expect(response.body.ok).toBe(true);
-    expect(response.body.results[0].median).toBe(median((n => [...Array(n).keys()])(NUM_OF_DOCS).concat(-1)));
+    expect(response.body.results[0].median).toBe(median((n => [...Array(n).keys()])(NUM_OF_DOCS + 1).slice(1)));
   });
 
   test('query measurements with existing group_by property', async () => {
@@ -80,7 +71,7 @@ describe('Test /median route', () => {
     const response = await got.get(`/projects/${PROJECT_ID}/queries/median`, { query });
     expect(response.statusCode).toBe(200);
     expect(response.body.ok).toBe(true);
-    expect(response.body.results.length).toBe(NUM_OF_DOCS + 1);
+    expect(response.body.results.length).toBe(NUM_OF_DOCS);
     response.body.results.forEach(res => expect(Object.keys(res)).toEqual(['c', 'median']));
   });
 
@@ -121,5 +112,50 @@ describe('Test /median route', () => {
     expect(response.statusCode).toBe(400);
     expect(response.body.ok).toBe(false);
     expect(response.body.err).toBeDefined();
+  });
+
+  test('query measurements with filter property (1)', async () => {
+    const query = {
+      masterKey: CENOTE_MASTER_KEY,
+      event_collection: 'test',
+      target_property: 'a',
+      filters: JSON.stringify([{ property_name: 'a', operator: 'gte', property_value: (NUM_OF_DOCS / 2) }]),
+    };
+    const response = await got.get(`/projects/${PROJECT_ID}/queries/median`, { query });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.ok).toBe(true);
+    expect(response.body.results[0].median).toBe(median((n => [...Array(n).keys()])(NUM_OF_DOCS + 1).slice(Math.ceil(NUM_OF_DOCS / 2))));
+  });
+
+  test('query measurements with filter property (2)', async () => {
+    const query = {
+      masterKey: CENOTE_MASTER_KEY,
+      event_collection: 'test',
+      target_property: 'a',
+      filters: JSON.stringify([
+        { property_name: 'a', operator: 'eq', property_value: NUM_OF_DOCS },
+        { property_name: 'b', operator: 'eq', property_value: NUM_OF_DOCS },
+      ]),
+    };
+    const response = await got.get(`/projects/${PROJECT_ID}/queries/median`, { query });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.ok).toBe(true);
+    expect(response.body.results[0].median).toBe(NUM_OF_DOCS);
+  });
+
+  test('query measurements with filter property (3)', async () => {
+    const query = {
+      masterKey: CENOTE_MASTER_KEY,
+      event_collection: 'test',
+      target_property: 'a',
+      filters: JSON.stringify([
+        { property_name: 'a', operator: 'eq', property_value: NUM_OF_DOCS },
+        { property_name: 'b', operator: 'eq', property_value: NUM_OF_DOCS - 1 },
+      ]),
+    };
+    const response = await got.get(`/projects/${PROJECT_ID}/queries/median`, { query });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.ok).toBe(true);
+    expect(response.body.results[0].median).toBe(0);
   });
 });

@@ -1,0 +1,79 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: storm
+  namespace: cenote
+  labels:
+    app: storm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storm
+  template:
+    metadata:
+      labels:
+        app: storm
+    spec:
+      containers:
+      - args:
+        - /./startStorm.sh
+        name: storm
+        image: ldimi/cenote-storm:0.03e
+        ports:
+        - containerPort: 6627
+        - containerPort: 6699
+        - containerPort: 6700
+        - containerPort: 6701
+        - containerPort: 6702
+        - containerPort: 6703
+        - containerPort: 8080
+        env:
+        - name: ZOOKEEPER_SERVERS
+          value: zoo:2181
+        - name: DATABASE_URL
+          value: postgres://cockroach@cockroachdb-cockroachdb:26257/cenote?sslmode=disable
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: storm-svc
+  namespace: cenote
+spec:
+  ports:
+  - port: 6627
+    protocol: TCP
+    name: 6627storm
+  - port: 6699
+    protocol: TCP
+    name: 6699storm
+  - port: 6700
+    protocol: TCP
+    name: 6700storm
+  - port: 6701
+    protocol: TCP
+    name: 6701storm
+  - port: 6702
+    protocol: TCP
+    name: 6702storm
+  - port: 6703
+    protocol: TCP
+    name: 6703storm
+  selector:
+    app: storm
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: storm-svc-nodeport
+  namespace: cenote
+spec:
+  ports:
+  - name: 8080tcp1
+    nodePort: 30849
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: storm
+  type: NodePort

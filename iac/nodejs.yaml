@@ -1,0 +1,110 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  annotations:
+    version: latest
+  labels:
+    name: cenote-api
+    release: stable
+    environment: production
+  name: cenote-api
+  namespace: cenote
+spec:
+  minReadySeconds: 4
+  progressDeadlineSeconds: 10
+  replicas: 3
+  selector: 
+    matchLabels:
+      name: cenote-api
+      environment: production
+  revisionHistoryLimit: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        name: cenote-api
+        environment: production
+    spec:
+      containers:
+      - env:
+        - name: COCKROACH_DBNAME
+          value: cenote
+        - name: COCKROACH_URL
+          value: cenote-cockroach
+        - name: DATABASE_URL
+          value: mongodb://cenote-mongo:27017/cenote-db
+        - name: GLOBAL_LIMIT
+          value: "5000"
+        - name: HOST
+          value: 0.0.0.0
+        - name: KAFKA_TOPIC
+          value: cenoteIncoming
+        - name: PORT
+          value: "3000"
+        - name: KAFKA_SERVERS
+          value: cenote-kafka-zookeeper
+        image: ldimi/cenote-nodejs:0.02
+        readinessProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        imagePullPolicy: Always
+        name: cenote-api
+        volumeMounts:
+        - mountPath: /home/user/.npm
+          name: dotnpm-volume
+        ports:
+        - containerPort: 3000
+          name: 3000tpc
+          protocol: TCP
+        securityContext:
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: false
+      restartPolicy: "Always"
+      terminationGracePeriodSeconds: 5
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      volumes:
+      - name: dotnpm-volume
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cenote-api-svc
+  namespace: cenote
+spec:
+  ports:
+  - name: 3000tcp
+    port: 80
+    targetPort: 3000
+    protocol: TCP
+  selector:
+    name: cenote-api
+    environment: production
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: cenote-api-ingress
+  namespace: cenote
+spec:
+  rules:
+  - host: cenote.sidero.services
+    http:
+      paths:
+      - backend:
+          serviceName: cenote-api-svc
+          servicePort: 80

@@ -1,0 +1,153 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: zookeeper1
+  namespace: cenote
+  labels:
+    app: zookeeper1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper1
+  template:
+    metadata:
+      labels:
+        app: zookeeper1
+    spec:
+      containers:
+      - name: zookeeper1
+        image: zookeeper:3.4
+        ports:
+        - containerPort: 2181
+          protocol: TCP
+        - containerPort: 2888
+          protocol: TCP
+        - containerPort: 3888
+          protocol: TCP
+        env:
+        - name: ZOO_MY_ID
+          value: "1"
+        - name: ZOO_SERVERS
+          value: server.1=0.0.0.0:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: zookeeper2
+  namespace: cenote
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper2
+  template:
+    metadata:
+      labels:
+        app: zookeeper2
+    spec:
+      containers:
+      - name: zookeeper2
+        image: zookeeper:3.4
+        ports:
+        - containerPort: 2181
+          protocol: TCP
+        - containerPort: 2888
+          protocol: TCP
+        - containerPort: 3888
+          protocol: TCP
+        env:
+        - name: ZOO_MY_ID
+          value: "2"
+        - name: ZOO_SERVERS
+          value: server.1=zoo1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zoo3:2888:3888
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: zookeeper3
+  namespace: cenote
+  labels:
+    app: zookeeper3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper3
+  template:
+    metadata:
+      labels:
+        app: zookeeper3
+    spec:
+      containers:
+      - name: zookeeper3
+        image: zookeeper:3.4
+        ports:
+        - containerPort: 2181
+          protocol: TCP
+        - containerPort: 2888
+          protocol: TCP
+        - containerPort: 3888
+          protocol: TCP
+        env:
+        - name: ZOO_MY_ID
+          value: "3"
+        - name: ZOO_SERVERS
+          value: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=0.0.0.0:2888:3888
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: zoo1
+  namespace: cenote
+spec:
+  ports:
+  - port: 2181
+    protocol: TCP
+    name: 2181z1
+  - port: 2888
+    protocol: TCP 
+    name: 2888z1
+  - port: 3888
+    protocol: TCP 
+    name: 3888z1
+  selector:
+    app: zookeeper1
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: zoo2
+  namespace: cenote
+spec:
+  ports:
+  - port: 2181
+    protocol: TCP
+    name: 2181z2
+  - port: 2888
+    protocol: TCP 
+    name: 2888z2
+  - port: 3888
+    protocol: TCP 
+    name: 3888z2
+  selector:
+    app: zookeeper2
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: zoo3
+  namespace: cenote
+spec:
+  ports:
+  - port: 2181
+    protocol: TCP
+    name: 2181z3
+  - port: 2888
+    protocol: TCP 
+    name: 2888z3
+  - port: 3888
+    protocol: TCP 
+    name: 3888z3
+  selector:
+    app: zookeeper3

@@ -1,0 +1,44 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: zookeeper
+  namespace: cenote
+  labels:
+    app: zookeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      containers:
+      - name: zookeeper
+        image: zookeeper:3.4
+        ports:
+        - containerPort: 2181
+        env:
+        - name: ZOO_PORT
+          value: "2181"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: zoo
+  namespace: cenote
+spec:
+  ports:
+  - port: 2181
+    protocol: TCP
+    name: 2181z1
+  - port: 2888
+    protocol: TCP 
+    name: 2888z1
+  - port: 3888
+    protocol: TCP 
+    name: 3888z1
+  selector:
+    app: zookeeper

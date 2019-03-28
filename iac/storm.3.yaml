@@ -1,31 +1,31 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: storm1
+  name: storm3
   namespace: cenote
   labels:
-    app: storm1
+    app: storm3
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: storm1
+      app: storm3
   template:
     metadata:
       labels:
-        app: storm1
+        app: storm3
     spec:
       hostAliases:
+      - ip: "10.43.192.184"
+        hostnames:
+        - "storm1"
       - ip: "10.43.215.24"
         hostnames:
         - "storm2"
-      - ip: "10.43.122.136"
-        hostnames:
-        - "storm3"
       containers:
       - args:
         - /./startStorm.sh
-        name: storm1
+        name: storm3
         image: ldimi/cenote-storm:0.04e
         ports:
         - containerPort: 6627
@@ -44,45 +44,45 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: storm-svc1
+  name: storm-svc3
   namespace: cenote
 spec:
-  clusterIP: 10.43.192.184
+  clusterIP: 10.43.122.136
   type: ClusterIP
   ports:
   - port: 6627
     protocol: TCP
-    name: 6627storm1
+    name: 6627storm3
   - port: 6699
     protocol: TCP
-    name: 6699storm1
+    name: 6699storm3
   - port: 6700
     protocol: TCP
-    name: 6700storm1
+    name: 6700storm3
   - port: 6701
     protocol: TCP
-    name: 6701storm1
+    name: 6701storm3
   - port: 6702
     protocol: TCP
-    name: 6702storm1
+    name: 6702storm3
   - port: 6703
     protocol: TCP
-    name: 6703storm1
+    name: 6703storm3
   selector:
-    app: storm1
+    app: storm
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: storm-svc-nodeport1
+  name: storm-svc-nodeport3
   namespace: cenote
 spec:
   ports:
-  - name: 8080tcp11
-    nodePort: 30849
+  - name: 8080tcp13
+    nodePort: 30851
     port: 8080
     protocol: TCP
     targetPort: 8080
   selector:
-    app: storm1
+    app: storm3
   type: NodePort

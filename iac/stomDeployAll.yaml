@@ -1,0 +1,131 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: storm1
+  namespace: cenote
+  labels:
+    app: storm1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storm1
+  template:
+    metadata:
+      labels:
+        app: storm1
+    spec:
+      hostAliases:
+      - ip: "10.43.215.24"
+        hostnames:
+        - "storm2"
+      - ip: "10.43.122.136"
+        hostnames:
+        - "storm3"
+      hostname: storm-svc1
+      containers:
+      - args:
+        - /./startStorm.sh
+        name: storm1
+        image: ldimi/cenote-storm:0.04e
+        ports:
+        - containerPort: 6627
+        - containerPort: 6699
+        - containerPort: 6700
+        - containerPort: 6701
+        - containerPort: 6702
+        - containerPort: 6703
+        - containerPort: 8080
+        env:
+        - name: ZOOKEEPER_SERVERS
+          value: zoo:2181
+        - name: DATABASE_URL
+          value: postgres://cockroach@cockroachdb-cockroachdb:26257/cenote?sslmode=disable
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: storm2
+  namespace: cenote
+  labels:
+    app: storm2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storm2
+  template:
+    metadata:
+      labels:
+        app: storm2
+    spec:
+      hostAliases:
+      - ip: "10.43.192.184"
+        hostnames:
+        - "storm1"
+      - ip: "10.43.122.136"
+        hostnames:
+        - "storm3"
+      hostname: storm-svc2
+      containers:
+      - args:
+        - /./startStorm.sh
+        name: storm2
+        image: ldimi/cenote-storm:0.04e
+        ports:
+        - containerPort: 6627
+        - containerPort: 6699
+        - containerPort: 6700
+        - containerPort: 6701
+        - containerPort: 6702
+        - containerPort: 6703
+        - containerPort: 8080
+        env:
+        - name: ZOOKEEPER_SERVERS
+          value: zoo:2181
+        - name: DATABASE_URL
+          value: postgres://cockroach@cockroachdb-cockroachdb:26257/cenote?sslmode=disable
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: storm3
+  namespace: cenote
+  labels:
+    app: storm3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storm3
+  template:
+    metadata:
+      labels:
+        app: storm3
+    spec:
+      hostAliases:
+      - ip: "10.43.192.184"
+        hostnames:
+        - "storm1"
+      - ip: "10.43.215.24"
+        hostnames:
+        - "storm2"
+      hostname: storm-svc3
+      containers:
+      - args:
+        - /./startStorm.sh
+        name: storm3
+        image: ldimi/cenote-storm:0.04e
+        ports:
+        - containerPort: 6627
+        - containerPort: 6699
+        - containerPort: 6700
+        - containerPort: 6701
+        - containerPort: 6702
+        - containerPort: 6703
+        - containerPort: 8080
+        env:
+        - name: ZOOKEEPER_SERVERS
+          value: zoo:2181
+        - name: DATABASE_URL
+          value: postgres://cockroach@cockroachdb-cockroachdb:26257/cenote?sslmode=disable

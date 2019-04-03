@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: kafka
-        image: wurstmeister/kafka:2.12-2.1.1
+        image: issel/kafka:latest
         ports:
         - containerPort: 9092
         env:

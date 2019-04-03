@@ -22,11 +22,12 @@ spec:
       - ip: "10.43.122.136"
         hostnames:
         - "storm3"
+      hostname: storm-svc1
       containers:
       - args:
         - /./startStorm.sh
         name: storm1
-        image: ldimi/cenote-storm:0.04e
+        image: issel/storm:all
         ports:
         - containerPort: 6627
         - containerPort: 6699

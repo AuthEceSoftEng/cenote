@@ -27,7 +27,7 @@ spec:
       - args:
         - /./startStorm.sh
         name: storm1
-        image: issel/storm:all
+        image: issel/storm:0.7
         ports:
         - containerPort: 6627
         - containerPort: 6699

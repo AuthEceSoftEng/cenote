@@ -28,6 +28,7 @@ spec:
         - /./startStorm.sh
         name: storm2
         image: issel/storm:super-nimbus
+        imagePullPolicy: Always
         ports:
         - containerPort: 6627
         - containerPort: 6699
@@ -39,6 +40,10 @@ spec:
         env:
         - name: ZOOKEEPER_SERVERS
           value: zoo:2181
+        - name: REDIS_HOST
+          value: redis-master
+        - name: REDIS_PASSWORD
+          value: changeme
         - name: DATABASE_URL
           value: postgres://cockroach@cockroachdb-cockroachdb:26257/cenote?sslmode=disable
 ---

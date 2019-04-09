@@ -34,7 +34,7 @@ spec:
         - name: COCKROACH_DBNAME
           value: cenote
         - name: COCKROACH_URL
-          value: cenote-cockroach
+          value: cockroachdb-cockroachdb
         - name: DATABASE_URL
           value: mongodb://snf-843202.vm.okeanos.grnet.gr:27017/cenote-db
         - name: GLOBAL_LIMIT
@@ -46,7 +46,7 @@ spec:
         - name: PORT
           value: "3000"
         - name: KAFKA_SERVERS
-          value: cenote-kafka-zookeeper
+          value: kafka-svc1:9092,kafka-svc2:9092,kafka-svc3:9092
         image: issel/cenote-api:latest
         readinessProbe:
           tcpSocket:

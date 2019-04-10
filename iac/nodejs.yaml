@@ -13,7 +13,7 @@ spec:
   minReadySeconds: 4
   progressDeadlineSeconds: 10
   replicas: 3
-  selector: 
+  selector:
     matchLabels:
       name: cenote-api
       environment: production
@@ -35,6 +35,8 @@ spec:
           value: cenote
         - name: COCKROACH_URL
           value: cockroachdb-cockroachdb
+        - name: COCKROACH_PORT
+          value: '26257'
         - name: DATABASE_URL
           value: mongodb://snf-843202.vm.okeanos.grnet.gr:27017/cenote-db
         - name: GLOBAL_LIMIT
@@ -47,6 +49,12 @@ spec:
           value: "3000"
         - name: KAFKA_SERVERS
           value: kafka-svc1:9092,kafka-svc2:9092,kafka-svc3:9092
+        - name: REDIS_URL
+          value: redis-master
+        - name: REDIS_PORT
+          value: '6379'
+        - name: REDIS_PASSWORD
+          value: 'changeme'
         image: issel/cenote-api:latest
         readinessProbe:
           tcpSocket:

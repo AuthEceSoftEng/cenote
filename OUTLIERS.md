@@ -19,7 +19,7 @@ Write data:
 
 Read data:
 
-In all API calls there will be a query param named `outliers`. The default value will be 'include', but there will be tow other values: 'exclude' and 'only'. Include will include all outliers in the queries, exclude will exclude them and only will only use the outliers. After fetching the batch based on query params, the ODV values will be based on the 2nd pair of running averages and variance.
+In all API calls there will be a query param named `outliers`. The default value will be `include`, but there will be two other values: `exclude` and `only`. The value `include` will include all outliers in the queries, `exclude` will exclude them and `only` will only use the outliers. After fetching the batch based on query params, the ODV values will be based on the 2nd pair of running averages and variance.
 
 ## When bootstrapping Cenote
 

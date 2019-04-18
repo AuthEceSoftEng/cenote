@@ -1,4 +1,6 @@
-![cenote](https://github.com/AuthEceSoftEng/cenote/blob/master/Cenote_colour_Horizontal.png)
+![cenote](./Cenote_colour_Horizontal.png)
+
+[![Travis](https://img.shields.io/travis/com/AuthEceSoftEng/cenote.svg?style=flat-square&logo=travis&label=)](https://travis-ci.com/AuthEceSoftEng/cenote) [![license](https://img.shields.io/github/license/AuthEceSoftEng/cenote.svg?style=flat-square)](./LICENSE)
 
 [cenote](https://en.wikipedia.org/wiki/Cenote) (Katavothra) is a Big Data Management System (BDMS) for event processing and analytics. Our goal was to build an open source equivalent of [keen.io](http://keen.io) analytics and learn about scalable systems in the process. The technology stack is based on:
 
@@ -23,7 +25,7 @@ Since cenote is a distributed system it spans across 5 repositories:
 
 # Installation
 
-Our (staging) demo server can be found [here](http://snf-843202.vm.okeanos.grnet.gr:3000/) along with the online [API docs](http://snf-843202.vm.okeanos.grnet.gr:3000/docs). *NB: Do not store operational data there...they will be lost.*
+Our (staging) demo server can be found [here](https://cenote.sidero.services/) along with the online [API docs](https://cenote.sidero.services/docs). *NB: Do not store operational data there...they will be lost.*
 
 # Tests
 

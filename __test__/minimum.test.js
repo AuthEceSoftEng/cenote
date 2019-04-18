@@ -8,7 +8,12 @@ describe('Test /minimum route', () => {
   beforeAll(async () => {
     const response = await got.delete(`/projects/${PROJECT_ID}/queries/testCleanup`);
     await delay(5000);
-    expect(response.statusCode).toBe(204);
+    if (response.statusCode === 400) {
+      expect(response.body.ok).toBe(false);
+      expect(response.body.err).toBe(`relation "${PROJECT_ID}_test" does not exist`);
+    } else {
+      expect(response.statusCode).toBe(204);
+    }
   }, 10000);
 
   test(`add ${NUM_OF_DOCS} measurements to collection 'test' ( and wait ${Math.trunc(NUM_OF_DOCS / 3)} seconds )`, async () => {
@@ -18,7 +23,7 @@ describe('Test /minimum route', () => {
     const response = await got.post(`/projects/${PROJECT_ID}/events/test?masterKey=${CENOTE_MASTER_KEY}`, { body });
     await delay(NUM_OF_DOCS * 300);
     expect(response.statusCode).toBe(202);
-    expect(response.body.length).toBe(NUM_OF_DOCS);
+    expect(response.body.message).toBe('Events sent.');
   }, NUM_OF_DOCS * 400);
 
   test('query without specifying target_property property fails', async () => {

@@ -2,7 +2,7 @@ sudo: false
 dist: xenial
 language: node_js
 node_js:
-  - node
+  - lts/*
 cache: npm
 env:
   - NUM_OF_DOCS=100 CENOTE_API_URL="https://cenote.sidero.services/api"

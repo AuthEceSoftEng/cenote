@@ -1,4 +1,3 @@
-/* eslint-disable no-await-in-loop, no-restricted-syntax, no-bitwise */
 require('dotenv').config();
 const got = require('got').extend({ baseUrl: process.env.CENOTE_API_URL, json: true, throwHttpErrors: false, agent: undefined });
 
@@ -6,7 +5,7 @@ const measureWriteTime = require('./measureWriteTime');
 
 const { PROJECT_ID, CENOTE_MASTER_KEY } = process.env;
 
-const TOTAL_EVENTS = 3e4;
+const TOTAL_EVENTS = parseInt(process.env.TOTAL_EVENTS, 10) || 5e4;
 const WRITES_PER_POST = Math.min(parseInt(process.env.WRITES_PER_BATCH, 10) || 1e4, TOTAL_EVENTS);
 
 const numOfRequests = ~~(TOTAL_EVENTS / WRITES_PER_POST);

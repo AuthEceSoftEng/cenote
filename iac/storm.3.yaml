@@ -46,6 +46,8 @@ spec:
           value: zoo:2181
         - name: REDIS_HOST
           value: redis-master
+        - name: REDIS_PORT
+          value: '6379'
         - name: REDIS_PASSWORD
           value: changeme
         - name: DATABASE_URL

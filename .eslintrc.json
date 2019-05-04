@@ -5,5 +5,8 @@
   "extends": [
     "plugin:jest/recommended",
     "iamnapo"
-  ]
+  ],
+  "rules": {
+    "no-bitwise": "off"
+  }
 }

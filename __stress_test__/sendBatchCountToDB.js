@@ -16,13 +16,14 @@ const getRandomEvent = () => {
 };
 
 const sendToCenote = async () => {
-  const baseUrl = process.env.CENOTE_SERVER_1;
+  const baseUrl = process.env.CENOTE_API_URL;
   const times = [];
   const query = { masterKey: CENOTE_MASTER_KEY, event_collection: 'stresstest8' };
   const { count } = (await got.get(`/projects/${PROJECT_ID}/queries/count`, { query, baseUrl })).body.results[0];
+  const event = getRandomEvent();
   for (const i of Array(numOfRequests).keys()) {
     const payload = [];
-    for (let j = 0; j < WRITES_PER_BATCH; j += 1) payload.push(getRandomEvent());
+    for (let j = 0; j < WRITES_PER_BATCH; j += 1) payload.push(event);
     await got.post(`/projects/${PROJECT_ID}/events/stresstest8?masterKey=${CENOTE_MASTER_KEY}`, { body: { payload }, baseUrl });
     times.push(await measureWriteTime('stresstest8', (count || 0) + (i + 1) * WRITES_PER_BATCH));
   }

@@ -7,7 +7,7 @@ const { PROJECT_ID, CENOTE_MASTER_KEY } = process.env;
 
 module.exports = async (eventCollection, totalEvents) => {
   const startTime = Date.now();
-  const baseUrl = process.env.CENOTE_SERVER_1;
+  const baseUrl = process.env.CENOTE_API_URL;
   const query = { masterKey: CENOTE_MASTER_KEY, event_collection: eventCollection };
   for (const _ of Array(totalEvents).keys()) { // eslint-disable-line no-unused-vars
     const { count } = (await got.get(`/projects/${PROJECT_ID}/queries/count`, { query, baseUrl })).body.results[0];

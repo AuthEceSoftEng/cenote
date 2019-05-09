@@ -18,11 +18,118 @@ spec:
       containers:
       - name: zookeeper
         image: zookeeper:3.4
+        volumeMounts:
+        - mountPath: /data
+          name: zookeeper-data
+        - mountPath: /datalog
+          name: zookeeper-datalog
+        - mountPath: /log
+          name: zookeeper-log
         ports:
         - containerPort: 2181
         env:
         - name: ZOO_PORT
           value: "2181"
+        - name: ZOO_AUTOPURGE_SNAPRETAINCOUNT
+          value: "10"
+      volumes:
+      - name: zookeeper-data
+        persistentVolumeClaim:
+          claimName: zookeeper-data
+      - name: zookeeper-log
+        persistentVolumeClaim:
+          claimName: zookeeper-log
+      - name: zookeeper-datalog
+        persistentVolumeClaim:
+          claimName: zookeeper-datalog
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    volume.beta.kubernetes.io/storage-provisioner: rancher.io/longhorn
+  finalizers:
+  - kubernetes.io/pvc-protection
+  labels:
+    app: zookeeper
+  name: zookeeper-data
+  namespace: cenote
+spec:
+  accessModes:
+  - ReadWriteOnce
+  dataSource: null
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: longhorn
+  volumeMode: Filesystem
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    volume.beta.kubernetes.io/storage-provisioner: rancher.io/longhorn
+  finalizers:
+  - kubernetes.io/pvc-protection
+  labels:
+    app: zookeeper
+  name: zookeeper-log
+  namespace: cenote
+spec:
+  accessModes:
+  - ReadWriteOnce
+  dataSource: null
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: longhorn
+  volumeMode: Filesystem
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    volume.beta.kubernetes.io/storage-provisioner: rancher.io/longhorn
+  finalizers:
+  - kubernetes.io/pvc-protection
+  labels:
+    app: zookeeper
+  name: zookeeper-datalog
+  namespace: cenote
+spec:
+  accessModes:
+  - ReadWriteOnce
+  dataSource: null
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: longhorn
+  volumeMode: Filesystem
+
+
+  # volumeClaimTemplates:
+  # - metadata:
+  #     name: data
+  #   spec:
+  #     accessModes:
+  #     - ReadWriteOnce
+  #     dataSource: null
+  #     resources:
+  #       requests:
+  #         storage: 5Gi
+  #     storageClassName: longhorn
+  #     volumeMode: Filesystem
+  # - metadata:
+  #     name: datalog
+  #   spec:
+  #     accessModes:
+  #     - ReadWriteOnce
+  #     dataSource: null
+  #     resources:
+  #       requests:
+  #         storage: 15Gi
+  #     storageClassName: longhorn
+  #     volumeMode: Filesystem
 ---
 kind: Service
 apiVersion: v1

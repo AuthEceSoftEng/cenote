@@ -104,7 +104,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: kafka-svc12
+  name: kafka-svc2
   namespace: cenote
 spec:
   ports:

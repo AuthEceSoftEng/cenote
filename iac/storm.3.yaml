@@ -91,7 +91,7 @@ metadata:
   namespace: cenote
 spec:
   ports:
-  - name: 8080tcp13
+  - name: 8080tcp3
     nodePort: 30851
     port: 8080
     protocol: TCP

@@ -38,7 +38,7 @@ spec:
         - name: COCKROACH_PORT
           value: '26257'
         - name: DATABASE_URL
-          value: mongodb://snf-843202.vm.okeanos.grnet.gr:27017/cenote-db
+          value: mongodb://mongodb:27017/cenote-db
         - name: GLOBAL_LIMIT
           value: "5000"
         - name: HOST

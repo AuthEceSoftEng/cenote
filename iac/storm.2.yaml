@@ -91,7 +91,7 @@ metadata:
   namespace: cenote
 spec:
   ports:
-  - name: 8080tcp12
+  - name: 8080tcp2
     nodePort: 30850
     port: 8080
     protocol: TCP

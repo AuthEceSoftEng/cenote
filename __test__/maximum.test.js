@@ -23,7 +23,7 @@ describe('Test /maximum route', () => {
     const response = await got.post(`/projects/${PROJECT_ID}/events/test?masterKey=${CENOTE_MASTER_KEY}`, { body });
     await delay(NUM_OF_DOCS * 300);
     expect(response.statusCode).toBe(202);
-    expect(response.body.message).toBe('Events sent.');
+    expect(response.body.message).toBe('Events sent!');
   }, NUM_OF_DOCS * 400);
 
   test('query without specifying target_property property fails', async () => {

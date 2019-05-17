@@ -21,7 +21,7 @@ describe('Test writing functionality', () => {
     const body = { payload };
     const response = await got.post(`/projects/${PROJECT_ID}/events/test?masterKey=${CENOTE_MASTER_KEY}`, { body });
     expect(response.statusCode).toBe(202);
-    expect(response.body.message).toBe('Events sent.');
+    expect(response.body.message).toBe('Events sent!');
     const query = { masterKey: CENOTE_MASTER_KEY, event_collection: 'test' };
     await delay(10000);
     const { count } = (await got.get(`/projects/${PROJECT_ID}/queries/count`, { query })).body.results[0];

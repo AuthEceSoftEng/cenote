@@ -1,0 +1,105 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: storm1
+  namespace: cenote-dev
+  labels:
+    app: storm1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storm1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: storm1
+    spec:
+      hostAliases:
+      - ip: "10.43.201.250"
+        hostnames:
+        - "storm2"
+      hostname: storm-svc1-nodeport1
+      containers:
+      - args:
+        - /./startStorm.sh
+        name: storm1
+        image: issel/storm-dev:all
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 6627
+        - containerPort: 6699
+        - containerPort: 6700
+        - containerPort: 6701
+        - containerPort: 6702
+        - containerPort: 6703
+        - containerPort: 6704
+        - containerPort: 6705
+        - containerPort: 8000
+        - containerPort: 8080
+        env:
+        - name: ZOOKEEPER_SERVERS
+          value: zoo:2181
+        - name: REDIS_HOST
+          value: redis-dev-master
+        - name: REDIS_PORT
+          value: '6379'
+        - name: REDIS_PASSWORD
+          value: oparalabon
+        - name: DATABASE_URL
+          value: postgres://cockroach@cockroachdb-dev-cockroachdb:26257/cenote?sslmode=disable
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: storm2
+  namespace: cenote-dev
+  labels:
+    app: storm2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storm2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: storm2
+    spec:
+      hostAliases:
+      - ip: "10.43.172.17"
+        hostnames:
+        - "storm1"
+      hostname: storm-svc2-nodeport2
+      containers:
+      - args:
+        - /./startStorm.sh
+        name: storm2
+        image: issel/storm-dev:super-nimbus
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 6627
+        - containerPort: 6699
+        - containerPort: 6700
+        - containerPort: 6701
+        - containerPort: 6702
+        - containerPort: 6703
+        env:
+        - name: ZOOKEEPER_SERVERS
+          value: zoo:2181
+        - name: REDIS_HOST
+          value: redis-dev-master
+        - name: REDIS_PORT
+          value: '6379'
+        - name: REDIS_PASSWORD
+          value: oparalabon
+        - name: DATABASE_URL
+          value: postgres://cockroach@cockroachdb-dev-cockroachdb:26257/cenote?sslmode=disable

@@ -6,14 +6,13 @@ const { PROJECT_ID, CENOTE_MASTER_KEY } = process.env;
 describe('Test writing functionality', () => {
   beforeAll(async () => {
     const response = await got.delete(`/projects/${PROJECT_ID}/queries/testCleanup`);
-    await delay(5000);
     if (response.statusCode === 400) {
       expect(response.body.ok).toBe(false);
-      expect(response.body.err).toBe(`relation "${PROJECT_ID}_test" does not exist`);
+      expect(response.body.results).toBe('BadQueryError');
     } else {
       expect(response.statusCode).toBe(204);
     }
-  }, 10000);
+  }, 15 * 1000);
 
   test('500 new measurements should be written at most after 10 seconds.', async () => {
     const payload = [];
@@ -23,10 +22,10 @@ describe('Test writing functionality', () => {
     expect(response.statusCode).toBe(202);
     expect(response.body.message).toBe('Events sent!');
     const query = { masterKey: CENOTE_MASTER_KEY, event_collection: 'test' };
-    await delay(10000);
+    await delay(10 * 1000);
     const { count } = (await got.get(`/projects/${PROJECT_ID}/queries/count`, { query })).body.results[0];
     expect(count).toBe(500);
-  }, 20000);
+  }, 30 * 1000);
 
   test('Writing to event collection with special characters in its name fails', async () => {
     const payload = [{ data: { a: 0, b: 0, c: (0).toString() } }];

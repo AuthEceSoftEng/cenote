@@ -25,7 +25,28 @@ Since cenote is a distributed system it spans across 5 repositories:
 
 # Installation
 
-Our (staging) demo server can be found [here](https://cenote.sidero.services/) along with the online [API docs](https://cenote.sidero.services/docs). *NB: Do not store operational data there...they will be lost.*
+> Our demo server can be found [here](https://cenote.sidero.services/) along with the online [API docs](https://cenote.sidero.services/docs).
+
+## Prerequisites
+
+Before you can install cenote, you need to have already set up:
+
+- A [zookeeper](https://zookeeper.apache.org/) instance/cluster which will be used to share configuration files between Apache's Kafka & Storm.
+- A [kafka](https://kafka.apache.org/) instance/cluster with:
+  - A topic for incoming messages (e.g. `cenoteIncoming`).
+- A [storm](https://storm.apache.org) instance/cluster.
+- A [cockroachDB](https://www.cockroachlabs.com/) instance/cluster with:
+  - A DB for cenote to store its data (e.g. `cenote`)
+  - A new user (e.g. `cockroach`) with all rights on the DB above.
+- [Node.js](https://nodejs.org/en/) & [MongoDB](https://www.mongodb.com/) for the API server to run on.
+
+## Cenote components
+
+- The Apache Storm Topology used by cenote to write events to the database can be found [here](https://github.com/AuthEceSoftEng/cenote-write). You just need to clone the source code, configure a `.env` file and compile it to a jar that you will then submit to the Storm cluster. Instructions on how to do this can be found in the repo's README file.
+
+  > Note: [cenote-write](https://github.com/AuthEceSoftEng/cenote-write) uses [cenote-cockroach](https://github.com/AuthEceSoftEng/cenote-cockroach) internally so check [cenote-cockroach@README](https://github.com/AuthEceSoftEng/cenote-cockroach/blob/master/README.md) for its required environment variables.
+
+- The API server & UI used by cenote can be found [here](https://github.com/AuthEceSoftEng/cenote-api). You just need to clone the source code, configure a `.env` file and start it. Instructions on how to do this can be found in the repo's README file.
 
 # Tests
 

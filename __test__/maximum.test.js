@@ -1,5 +1,4 @@
 const got = require('got').extend({ baseUrl: process.env.CENOTE_API_URL, json: true, throwHttpErrors: false });
-const delay = require('delay');
 
 const { PROJECT_ID, CENOTE_MASTER_KEY } = process.env;
 const { NUM_OF_DOCS } = global;
@@ -7,24 +6,28 @@ const { NUM_OF_DOCS } = global;
 describe('Test /maximum route', () => {
   beforeAll(async () => {
     const response = await got.delete(`/projects/${PROJECT_ID}/queries/testCleanup`);
-    await delay(5000);
     if (response.statusCode === 400) {
       expect(response.body.ok).toBe(false);
-      expect(response.body.err).toBe(`relation "${PROJECT_ID}_test" does not exist`);
+      expect(response.body.results).toBe('BadQueryError');
     } else {
       expect(response.statusCode).toBe(204);
     }
-  }, 10000);
+  }, 15 * 1000);
 
-  test(`add ${NUM_OF_DOCS} measurements to collection 'test' ( and wait ${Math.trunc(NUM_OF_DOCS / 3)} seconds )`, async () => {
+  test(`add ${NUM_OF_DOCS} measurements to collection 'test'`, async () => {
     const payload = [];
     for (let i = 1; i < NUM_OF_DOCS + 1; i += 1) payload.push({ data: { a: i, b: i, c: i.toString() } });
     const body = { payload };
     const response = await got.post(`/projects/${PROJECT_ID}/events/test?masterKey=${CENOTE_MASTER_KEY}`, { body });
-    await delay(NUM_OF_DOCS * 300);
     expect(response.statusCode).toBe(202);
     expect(response.body.message).toBe('Events sent!');
-  }, NUM_OF_DOCS * 400);
+    let count;
+    const query = { masterKey: CENOTE_MASTER_KEY, event_collection: 'test' };
+    while (!count) {
+      ({ count } = (await got.get(`/projects/${PROJECT_ID}/queries/count`, { query })).body.results[0]);
+    }
+    expect(count).toBe(NUM_OF_DOCS);
+  }, 30 * 1000);
 
   test('query without specifying target_property property fails', async () => {
     const query = {
@@ -110,7 +113,7 @@ describe('Test /maximum route', () => {
     const response = await got.get(`/projects/${PROJECT_ID}/queries/maximum`, { query });
     expect(response.statusCode).toBe(400);
     expect(response.body.ok).toBe(false);
-    expect(response.body.err).toBeDefined();
+    expect(response.body.results).toBeDefined();
   });
 
   test('query measurements with filter property (1)', async () => {

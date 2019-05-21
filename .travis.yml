@@ -5,6 +5,6 @@ node_js:
   - lts/*
 cache: npm
 env:
-  - NUM_OF_DOCS=100 CENOTE_API_URL="https://cenote.sidero.services/api"
+  - CENOTE_API_URL="https://cenote.sidero.services/api"
 notifications:
   email: false

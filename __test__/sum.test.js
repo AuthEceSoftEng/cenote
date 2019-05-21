@@ -12,7 +12,7 @@ describe('Test /sum route', () => {
     } else {
       expect(response.statusCode).toBe(204);
     }
-  }, 15 * 1000);
+  }, 20 * 1000);
 
   test(`add ${NUM_OF_DOCS} measurements to collection 'test'`, async () => {
     const payload = [];

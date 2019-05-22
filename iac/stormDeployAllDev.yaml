@@ -23,12 +23,12 @@ spec:
       - ip: "10.43.201.250"
         hostnames:
         - "storm2"
-      hostname: storm-svc1-nodeport1
+      hostname: storm-svc-nodeport1
       containers:
       - args:
         - /./startStorm.sh
         name: storm1
-        image: issel/storm-dev:all
+        image: issel/storm-dev:AllOld
         imagePullPolicy: Always
         ports:
         - containerPort: 6627
@@ -78,12 +78,12 @@ spec:
       - ip: "10.43.172.17"
         hostnames:
         - "storm1"
-      hostname: storm-svc2-nodeport2
+      hostname: storm-svc-nodeport2
       containers:
       - args:
         - /./startStorm.sh
         name: storm2
-        image: issel/storm-dev:super-nimbus
+        image: issel/storm-dev:SNOld
         imagePullPolicy: Always
         ports:
         - containerPort: 6627
@@ -92,6 +92,10 @@ spec:
         - containerPort: 6701
         - containerPort: 6702
         - containerPort: 6703
+        - containerPort: 6704
+        - containerPort: 6705
+        - containerPort: 8000
+        - containerPort: 8080
         env:
         - name: ZOOKEEPER_SERVERS
           value: zoo:2181

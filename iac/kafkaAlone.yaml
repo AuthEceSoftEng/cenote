@@ -2,7 +2,7 @@ apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: kafka
-  namespace: cenote
+  namespace: cenote-dev
   labels:
     app: kafka
 spec:
@@ -32,7 +32,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: kafka-svc
-  namespace: cenote
+  namespace: cenote-dev
 spec:
   ports:
   - port: 9092

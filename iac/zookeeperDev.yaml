@@ -1,0 +1,134 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: zookeeper
+  namespace: cenote-dev
+  labels:
+    app: zookeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      containers:
+      - name: zookeeper
+        image: zookeeper:3.4
+        ports:
+        - containerPort: 2181
+        env:
+        - name: ZOO_PORT
+          value: "2181"
+        - name: ZOO_AUTOPURGE_SNAPRETAINCOUNT
+          value: "10"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    volume.beta.kubernetes.io/storage-provisioner: rancher.io/longhorn
+  finalizers:
+  - kubernetes.io/pvc-protection
+  labels:
+    app: zookeeper
+  name: zookeeper-data
+  namespace: cenote
+spec:
+  accessModes:
+  - ReadWriteOnce
+  dataSource: null
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: longhorn
+  volumeMode: Filesystem
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    volume.beta.kubernetes.io/storage-provisioner: rancher.io/longhorn
+  finalizers:
+  - kubernetes.io/pvc-protection
+  labels:
+    app: zookeeper
+  name: zookeeper-log
+  namespace: cenote
+spec:
+  accessModes:
+  - ReadWriteOnce
+  dataSource: null
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: longhorn
+  volumeMode: Filesystem
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    volume.beta.kubernetes.io/storage-provisioner: rancher.io/longhorn
+  finalizers:
+  - kubernetes.io/pvc-protection
+  labels:
+    app: zookeeper
+  name: zookeeper-datalog
+  namespace: cenote
+spec:
+  accessModes:
+  - ReadWriteOnce
+  dataSource: null
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: longhorn
+  volumeMode: Filesystem
+
+
+  # volumeClaimTemplates:
+  # - metadata:
+  #     name: data
+  #   spec:
+  #     accessModes:
+  #     - ReadWriteOnce
+  #     dataSource: null
+  #     resources:
+  #       requests:
+  #         storage: 5Gi
+  #     storageClassName: longhorn
+  #     volumeMode: Filesystem
+  # - metadata:
+  #     name: datalog
+  #   spec:
+  #     accessModes:
+  #     - ReadWriteOnce
+  #     dataSource: null
+  #     resources:
+  #       requests:
+  #         storage: 15Gi
+  #     storageClassName: longhorn
+  #     volumeMode: Filesystem
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: zoo
+  namespace: cenote-dev
+spec:
+  ports:
+  - port: 2181
+    protocol: TCP
+    name: 2181z1
+  - port: 2888
+    protocol: TCP 
+    name: 2888z1
+  - port: 3888
+    protocol: TCP 
+    name: 3888z1
+  selector:
+    app: zookeeper

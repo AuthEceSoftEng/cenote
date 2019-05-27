@@ -45,8 +45,9 @@ Before you can install cenote, you need to have already set up:
 Every service should be deployed under the namespace cenote.
 redis, cockroach, mongodb can be installed using the tiller-helm.
 After that, the following services should be installed: zookeeper, storm, kafka, node.
-Those services can be installed using its [yaml files](https://github.com/AuthEceSoftEng/cenote/tree/master/iac)
-Login at your kubernetes cluster and run the following commands:
+Those services can be installed using its [yaml files](https://github.com/AuthEceSoftEng/cenote/tree/master/iac).
+
+Login at your kubernetes cluster and execute the following commands:
 ```
 kubectl create -f https://github.com/AuthEceSoftEng/cenote/tree/master/iac/zookeeperAlone.yaml
 kubectl create -f https://github.com/AuthEceSoftEng/cenote/tree/master/iac/kafkaAll.yaml

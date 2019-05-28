@@ -60,6 +60,7 @@ kubectl create -f https://github.com/AuthEceSoftEng/cenote/tree/master/iac/storm
 - Storm 1: 10.43.192.184
 - Storm 2: 10.43.215.24
 - Storm 3: 10.43.122.136
+
 If you want to use different IPs, you have to rebuild the docker image.
 
 ## Cenote components

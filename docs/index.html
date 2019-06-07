@@ -1,1 +1,93 @@
-Hello world
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cenote</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  </head>
+  <body>
+  <section class="section">
+    <div class="container">
+      <div class="content">
+      <h1 class="title is-3">
+        Cenote
+      </h1>
+      <p class="subtitle">
+        An open source, event-based, Big Data Management System with a near-real time Analytics-as-a-Service.
+      </p>
+      <p>
+        Cenote can be used in various domains that follow the event-based logic like the
+        Internet of Things, Marketing Analytics, Monitoring Analytics, among others.
+      </p>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="content">
+      <h2 class="title is-4">
+        Getting started
+      </h2>
+      <ul>
+        <li>Cenote Installations instructions can be found <a href="https://github.com/AuthEceSoftEng/cenote">here</a>.</li>
+        <li>After installing cenote, a user guide can be found here.</li>
+        <li>The API docs for the clients communicating with the AaaS can be found <a href="https://cenote.sidero.services/docs/">here</a>.</li>
+      </ul>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="content">
+      <h2 class="title is-4">
+        Tech stack
+      </h2>
+      <p>
+        Cenote is built using node.js, express, ReactJS, MongoDB, Apache Kafka, Apache Storm, CockroachDB,
+        Redis, Apache Spark, NGINX, Kubernetes, Rancher and the programming languages: JavaScript, Python,
+        Java and Lua.
+      </p>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="content">
+      <h2 class="title is-4">
+        Architecture
+      </h2>
+      <img src="cenote-arch.png"/>
+      <p>
+          Data transmission is split into two main flows: the write flow and the read flow. The write flow is concerned with writing data from <i>"web-enabled things"</i> to Cenote,
+          while the read flow is concerned with returning answers via the <a href="https://cenote.sidero.services/docs/">analytics API</a>.
+      </p>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="content">
+      <h2 class="title is-4">
+        About
+      </h2>
+      <p>
+        Built by the <a href="http://softeng.issel.ee.auth.gr/">AuthEceSoftEng team</a>. Supported by EPAnEK. Distributed as open source under the MIT licene.
+      </p>
+      <p>
+        Since cenote is a distributed system it spans across 5 repositories:
+      </p>
+
+      <ul>
+        <li><a href="https://github.com/AuthEceSoftEng/cenote">cenote</a>: Main repo, used for gathering all the issues related to cenote, hosting IaC files and containing installation instructions.</li>
+        <li><a href="https://github.com/AuthEceSoftEng/cenote-api">cenote-api</a>: API server & web management client, used also for data reading.</li>
+        <li><a href="https://github.com/AuthEceSoftEng/cenote-cockroach">cenote-cockroach</a>: Read/Write related code for CockroachDB.</li>
+        <li><a href="https://github.com/AuthEceSoftEng/cenote-write">cenote-write</a>: Apache Storm topology used for data writing.</li>
+        <li><a href="https://github.com/AuthEceSoftEng/cenote-read">cenote-read</a>: Apache Storm Topology used for querying data. (Obsolete, due to latencies in DRPC server, switched the reading to cenote-api).</li>
+      </ul>
+      </div>
+    </div>
+  </section>
+  </body>
+</html>

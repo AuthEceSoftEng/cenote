@@ -1,3 +1,4 @@
 node_modules
 .env
 __stress_test__/*.txt
+.DS_Store

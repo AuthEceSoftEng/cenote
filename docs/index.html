@@ -8,86 +8,138 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   </head>
   <body>
-  <section class="section">
-    <div class="container">
-      <div class="content">
-      <h1 class="title is-3">
-        Cenote
-      </h1>
-      <p class="subtitle">
-        An open source, event-based, Big Data Management System with a near-real time Analytics-as-a-Service.
-      </p>
-      <p>
-        Cenote can be used in various domains that follow the event-based logic like the
-        Internet of Things, Marketing Analytics, Monitoring Analytics, among others.
-      </p>
-      </div>
-    </div>
-  </section>
-  <section class="section">
-    <div class="container">
-      <div class="content">
-      <h2 class="title is-4">
-        Getting started
-      </h2>
-      <ul>
-        <li>Cenote Installations instructions can be found <a href="https://github.com/AuthEceSoftEng/cenote">here</a>.</li>
-        <li>After installing cenote, a user guide can be found here.</li>
-        <li>The API docs for the clients communicating with the AaaS can be found <a href="https://cenote.sidero.services/docs/">here</a>.</li>
-      </ul>
-      </div>
-    </div>
-  </section>
-  <section class="section">
-    <div class="container">
-      <div class="content">
-      <h2 class="title is-4">
-        Tech stack
-      </h2>
-      <p>
-        Cenote is built using node.js, express, ReactJS, MongoDB, Apache Kafka, Apache Storm, CockroachDB,
-        Redis, Apache Spark, NGINX, Kubernetes, Rancher and the programming languages: JavaScript, Python,
-        Java and Lua.
-      </p>
-      </div>
-    </div>
-  </section>
-  <section class="section">
-    <div class="container">
-      <div class="content">
-      <h2 class="title is-4">
-        Architecture
-      </h2>
-      <img src="cenote-arch.png"/>
-      <p>
-          Data transmission is split into two main flows: the write flow and the read flow. The write flow is concerned with writing data from <i>"web-enabled things"</i> to Cenote,
-          while the read flow is concerned with returning answers via the <a href="https://cenote.sidero.services/docs/">analytics API</a>.
-      </p>
-      </div>
-    </div>
-  </section>
-  <section class="section">
-    <div class="container">
-      <div class="content">
-      <h2 class="title is-4">
-        About
-      </h2>
-      <p>
-        Built by the <a href="http://softeng.issel.ee.auth.gr/">AuthEceSoftEng team</a>. Supported by EPAnEK. Distributed as open source under the MIT licene.
-      </p>
-      <p>
-        Since cenote is a distributed system it spans across 5 repositories:
-      </p>
 
-      <ul>
-        <li><a href="https://github.com/AuthEceSoftEng/cenote">cenote</a>: Main repo, used for gathering all the issues related to cenote, hosting IaC files and containing installation instructions.</li>
-        <li><a href="https://github.com/AuthEceSoftEng/cenote-api">cenote-api</a>: API server & web management client, used also for data reading.</li>
-        <li><a href="https://github.com/AuthEceSoftEng/cenote-cockroach">cenote-cockroach</a>: Read/Write related code for CockroachDB.</li>
-        <li><a href="https://github.com/AuthEceSoftEng/cenote-write">cenote-write</a>: Apache Storm topology used for data writing.</li>
-        <li><a href="https://github.com/AuthEceSoftEng/cenote-read">cenote-read</a>: Apache Storm Topology used for querying data. (Obsolete, due to latencies in DRPC server, switched the reading to cenote-api).</li>
-      </ul>
+      <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+        <div class="container">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="https://authecesofteng.github.io/cenote">
+              <img src="cenote-logo-long.png">
+            </a>
+
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+        </div>
+      </nav>
+      <section class="hero is-dark is-bold">
+          <div class="hero-body">
+            <div class="container has-text-centered">
+                <div class="columns is-mobile">
+                    <div class="column is-half is-offset-one-quarter">
+                        <h1 class="title">
+                            An open source, event-based, Big Data Management System with a near-real time Analytics-as-a-Service.
+                          </h1>
+                          <a class="button is-medium is-light" href="https://github.com/AuthEceSoftEng/cenote">Get Started</a>
+                    </div>
+                  </div>
+            </div>
+          </div>
+        </section>
+        <section class="section">
+            <div class="container">
+              <div class="content has-text-centered">
+                  <h2 class="title is-4">
+                      What is Cenote?
+                    </h2>
+        <p>
+          Cenote (Katavothra in Greek) is a Big Data Management System (BDMS) for event processing and analytics. Our initial goal was to build an
+          open source equivalent of keen.io analytics and learn about scalable systems in the process.  Cenote can be used in various domains that
+          follow the event-based logic like the Internet of Things, Marketing Analytics, Monitoring Analytics, among others. Its tech stack includes
+          technologies like: node.js, express, ReactJS, MongoDB, Apache Kafka, Apache Storm, CockroachDB, Redis, Apache Spark, NGINX, Kubernetes, Rancher
+          and the programming languages: JavaScript, Python, Java and Lua.
+        </p>
+        </div>
+        </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <div class="content has-text-centered">
+                    <h2 class="title is-4">
+                        Features
+                      </h2>
+        <div class="columns">
+            <div class="column">
+              <h3 class="subtitle is-5">
+                  Open Source
+                </h3>
+                <p>Completely open source under the MIT License.</p>
+            </div>
+            <div class="column">
+                <h3 class="subtitle is-5">
+                    Fault-tolerant
+                  </h3>
+                  <p>Fault-tolerant both on the data and on the system.</p>
+            </div>
+            <div class="column">
+                <h3 class="subtitle is-5">
+                    Schemaless
+                  </h3>
+                  <p>Open-ended schemas by convention over configuraion.</p>
+            </div>
+            <div class="column">
+                <h3 class="subtitle is-5">
+                    API-enabled
+                </h3>
+                <p>Access data and analytics through a REST API.</p>
+            </div>
+            </div>
+          </div>
       </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="content">
+        <h2 class="title is-4">
+          Getting started
+        </h2>
+        <ul>
+          <li>Cenote Installations instructions can be found <a href="https://github.com/AuthEceSoftEng/cenote">here</a>.</li>
+          <li>After installing cenote, a user guide can be found here.</li>
+          <li>The API docs for the clients communicating with the AaaS can be found <a href="https://cenote.sidero.services/docs/">here</a>.</li>
+        </ul>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="content">
+        <h2 class="title is-4">
+          Architecture
+        </h2>
+        <img src="cenote-arch.png"/>
+        <p>
+            Data transmission is split into two main flows: the write flow and the read flow. The write flow is concerned with writing data from <i>"web-enabled things"</i> to Cenote,
+            while the read flow is concerned with returning answers via the <a href="https://cenote.sidero.services/docs/">analytics API</a>.
+        </p>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="content">
+        <h2 class="title is-4">
+          About
+        </h2>
+        <p>
+          Built by the <a href="http://softeng.issel.ee.auth.gr/">AuthEceSoftEng team</a>. Supported by EPAnEK. Distributed as open source under the MIT licene.
+        </p>
+        <p>
+          Since cenote is a distributed system it spans across 5 repositories:
+        </p>
+
+        <ul>
+          <li><a href="https://github.com/AuthEceSoftEng/cenote">cenote</a>: Main repo, used for gathering all the issues related to cenote, hosting IaC files and containing installation instructions.</li>
+          <li><a href="https://github.com/AuthEceSoftEng/cenote-api">cenote-api</a>: API server & web management client, used also for data reading.</li>
+          <li><a href="https://github.com/AuthEceSoftEng/cenote-cockroach">cenote-cockroach</a>: Read/Write related code for CockroachDB.</li>
+          <li><a href="https://github.com/AuthEceSoftEng/cenote-write">cenote-write</a>: Apache Storm topology used for data writing.</li>
+          <li><a href="https://github.com/AuthEceSoftEng/cenote-read">cenote-read</a>: Apache Storm Topology used for querying data. (Obsolete, due to latencies in DRPC server, switched the reading to cenote-api).</li>
+        </ul>
+        </div>
+      </div>
+    </section>
     </div>
-  </section>
   </body>
 </html>

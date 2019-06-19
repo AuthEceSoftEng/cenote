@@ -1,7 +1,7 @@
 require('dotenv').config();
 const got = require('got').extend({ json: true, throwHttpErrors: false, agent: undefined });
 const Chance = require('chance');
-const delay = require('delay');
+const delay = require('delay').createWithTimers({ clearTimeout, setTimeout });
 
 const { PROJECT_ID, CENOTE_MASTER_KEY } = process.env;
 

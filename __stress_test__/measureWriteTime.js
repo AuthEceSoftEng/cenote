@@ -1,7 +1,6 @@
-/* eslint-disable no-await-in-loop, no-restricted-syntax, no-bitwise */
 require('dotenv').config();
 const got = require('got').extend({ json: true, throwHttpErrors: false, agent: undefined });
-const delay = require('delay');
+const delay = require('delay').createWithTimers({ clearTimeout, setTimeout });
 
 const { PROJECT_ID, CENOTE_MASTER_KEY } = process.env;
 

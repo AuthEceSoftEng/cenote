@@ -1,5 +1,5 @@
 const got = require('got').extend({ baseUrl: process.env.CENOTE_API_URL, json: true, throwHttpErrors: false });
-const delay = require('delay');
+const delay = require('delay').createWithTimers({ clearTimeout, setTimeout });
 
 const { PROJECT_ID, CENOTE_MASTER_KEY } = process.env;
 

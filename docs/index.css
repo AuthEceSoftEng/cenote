@@ -10,3 +10,7 @@
 .is-grey {
   background-color: #f3f3f3;
 }
+
+.is-horizontal-center {
+  justify-content: center;
+}

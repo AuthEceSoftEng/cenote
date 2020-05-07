@@ -122,6 +122,7 @@ describe("Test /eeris route", () => {
 		const month = `0${new Date().getMonth() + 1}`.slice(-2);
 		const day = `0${new Date().getDate()}`.slice(-2);
 		const hours = new Date().getHours();
+		const offsetCI = process.env.CI ? 3 : 0;
 		const dateString = `${year}-${month}-${day}`;
 		const query = {
 			masterKey: CENOTE_MASTER_KEY,
@@ -138,7 +139,7 @@ describe("Test /eeris route", () => {
 		expect(response.statusCode).toBe(200);
 		expect(response.body.ok).toBe(true);
 		expect(response.body.results.values.length).toBe(24);
-		expect(response.body.results.values[hours]).toBe(avg);
+		expect(response.body.results.values[hours + offsetCI]).toBe(avg);
 		expect(response.body.results.stats.max).toBe(NUM_OF_DOCS);
 		expect(response.body.results.stats.min).toBe(1);
 		expect(response.body.results.stats.avg).toBe(avg);

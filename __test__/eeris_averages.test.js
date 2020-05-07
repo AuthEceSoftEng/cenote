@@ -83,6 +83,7 @@ describe("Test /eeris route", () => {
 		expect(response.statusCode).toBe(200);
 		expect(response.body.ok).toBe(true);
 		expect(response.body.results.values.length).toBe(7);
+		expect(response.body.results.values[6]).toBe(avg);
 		expect(response.body.results.stats.max).toBe(NUM_OF_DOCS);
 		expect(response.body.results.stats.min).toBe(1);
 		expect(response.body.results.stats.avg).toBe(avg);
@@ -105,6 +106,7 @@ describe("Test /eeris route", () => {
 		expect(response.statusCode).toBe(200);
 		expect(response.body.ok).toBe(true);
 		expect(response.body.results.values.length).toBe(new Date().getDate());
+		expect(response.body.results.values[new Date().getDate() - 1]).toBe(avg);
 		expect(response.body.results.stats.max).toBe(NUM_OF_DOCS);
 		expect(response.body.results.stats.min).toBe(1);
 		expect(response.body.results.stats.avg).toBe(avg);
@@ -130,6 +132,7 @@ describe("Test /eeris route", () => {
 			dt: dateString,
 		};
 		const response = await got.get(`/projects/${PROJECT_ID}/queries/eeris`, { query });
+		console.log(response.body.results.values);
 
 		expect(response.statusCode).toBe(200);
 		expect(response.body.ok).toBe(true);

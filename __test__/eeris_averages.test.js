@@ -132,6 +132,7 @@ describe("Test /eeris route", () => {
 			dt: dateString,
 		};
 		const response = await got.get(`/projects/${PROJECT_ID}/queries/eeris`, { query });
+		console.log(hours);
 		console.log(response.body.results.values);
 
 		expect(response.statusCode).toBe(200);

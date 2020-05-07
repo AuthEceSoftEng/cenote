@@ -2,11 +2,12 @@ const got = require("got").extend({ baseUrl: process.env.CENOTE_API_URL, json: t
 
 const { PROJECT_ID, CENOTE_MASTER_KEY } = process.env;
 const { NUM_OF_DOCS } = global;
+const installationId = "5d80e4c5e209594310f3bb01";
 
 describe("Test /eeris route", () => {
 	beforeAll(async () => {
 		const query = {
-			installationId: "5d80e4c5e209594310f3bb01",
+			installationId,
 		};
 		const response = await got.delete(`/projects/${PROJECT_ID}/queries/eerisTestCleanup`, { query });
 		if (response.statusCode === 400) {
@@ -22,7 +23,7 @@ describe("Test /eeris route", () => {
 		for (let i = 1; i < NUM_OF_DOCS + 1; i += 1) {
 			payload.push({
 				data: {
-					installationid: "5d80e4c5e209594310f3bb01",
+					installationid: installationId,
 					a: i,
 					b: i,
 					c: i.toString(),
@@ -74,7 +75,7 @@ describe("Test /eeris route", () => {
 			masterKey: CENOTE_MASTER_KEY,
 			event_collection: "installations",
 			target_property: "a",
-			installationId: "5d80e4c5e209594310f3bb01",
+			installationId,
 			type: "week",
 		};
 		const response = await got.get(`/projects/${PROJECT_ID}/queries/eeris`, { query });
@@ -97,7 +98,7 @@ describe("Test /eeris route", () => {
 			masterKey: CENOTE_MASTER_KEY,
 			event_collection: "installations",
 			target_property: "a",
-			installationId: "5d80e4c5e209594310f3bb01",
+			installationId,
 			type: "month",
 		};
 		const response = await got.get(`/projects/${PROJECT_ID}/queries/eeris`, { query });
@@ -124,7 +125,7 @@ describe("Test /eeris route", () => {
 			masterKey: CENOTE_MASTER_KEY,
 			event_collection: "installations",
 			target_property: "a",
-			installationId: "5d80e4c5e209594310f3bb01",
+			installationId,
 			type: "day",
 			dt: dateString,
 		};

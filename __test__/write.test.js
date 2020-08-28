@@ -15,7 +15,7 @@ describe("Test writing functionality", () => {
 		await delay(10 * 1000);
 		const { count } = (await got.get(`/projects/${PROJECT_ID}/queries/count`, { query })).body.results[0];
 		expect(count).toBe(500);
-	}, 30 * 1000);
+	}, 50000);
 
 	test("Writing to event collection with special characters in its name fails", async () => {
 		const payload = [{ data: { a: 0, b: 0, c: (0).toString() } }];

@@ -4,7 +4,7 @@ const { PROJECT_ID, CENOTE_MASTER_KEY, EERIS_EVENT_COLLECTION } = process.env;
 const { NUM_OF_DOCS } = global;
 
 describe("Test /eeris route", () => {
-	beforeAll(async () => {
+	afterAll(async () => {
 		const query = {
 			eventCollection: EERIS_EVENT_COLLECTION,
 		};

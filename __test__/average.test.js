@@ -4,7 +4,7 @@ const { PROJECT_ID, CENOTE_MASTER_KEY } = process.env;
 const { NUM_OF_DOCS } = global;
 
 describe("Test /average route", () => {
-	beforeAll(async () => {
+	afterAll(async () => {
 		const response = await got.delete(`/projects/${PROJECT_ID}/queries/testCleanup`);
 		if (response.statusCode === 400) {
 			expect(response.body.ok).toBe(false);

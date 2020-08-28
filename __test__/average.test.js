@@ -17,7 +17,7 @@ describe("Test /average route", () => {
 			({ count } = (await got.get(`/projects/${PROJECT_ID}/queries/count`, { query })).body.results[0]);
 		}
 		expect(count).toBe(NUM_OF_DOCS);
-	}, 10000);
+	}, 30000);
 
 	test("query without specifying target_property property fails", async () => {
 		const query = {

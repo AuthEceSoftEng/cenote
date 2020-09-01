@@ -2,17 +2,31 @@ const got = require("got").extend({ baseUrl: process.env.CENOTE_API_URL, json: t
 
 const { PROJECT_ID, CENOTE_MASTER_KEY } = process.env;
 const { NUM_OF_DOCS } = global;
+const eventCollection = "percentile";
 
 describe("Test /percentile route", () => {
-	test(`add ${NUM_OF_DOCS} measurements to collection ’test’`, async () => {
+	afterAll(async () => {
+		const query = {
+			eventCollection,
+		};
+		const response = await got.delete(`/projects/${PROJECT_ID}/queries/testCleanup`, { query });
+		if (response.statusCode === 400) {
+			expect(response.body.ok).toBe(false);
+			expect(response.body.results).toBe("BadQueryError");
+		} else {
+			expect(response.statusCode).toBe(204);
+		}
+	}, 30000);
+
+	test(`add ${NUM_OF_DOCS} measurements to collection ’${eventCollection}’`, async () => {
 		const payload = [];
 		for (let i = 1; i < NUM_OF_DOCS + 1; i += 1) payload.push({ data: { a: i, b: i, c: i.toString() } });
 		const body = { payload };
-		const response = await got.post(`/projects/${PROJECT_ID}/events/test?masterKey=${CENOTE_MASTER_KEY}`, { body });
+		const response = await got.post(`/projects/${PROJECT_ID}/events/${eventCollection}?masterKey=${CENOTE_MASTER_KEY}`, { body });
 		expect(response.statusCode).toBe(202);
 		expect(response.body.message).toBe("Events sent!");
 		let count;
-		const query = { masterKey: CENOTE_MASTER_KEY, event_collection: "test" };
+		const query = { masterKey: CENOTE_MASTER_KEY, event_collection: eventCollection };
 		while (!count) {
 			({ count } = (await got.get(`/projects/${PROJECT_ID}/queries/count`, { query })).body.results[0]);
 		}
@@ -22,7 +36,7 @@ describe("Test /percentile route", () => {
 	test("query without specifying target_property property fails", async () => {
 		const query = {
 			masterKey: CENOTE_MASTER_KEY,
-			event_collection: "test",
+			event_collection: eventCollection,
 		};
 		const response = await got.get(`/projects/${PROJECT_ID}/queries/percentile`, { query });
 		expect(response.statusCode).toBe(400);
@@ -33,7 +47,7 @@ describe("Test /percentile route", () => {
 	test("query without specifying percentile property fails", async () => {
 		const query = {
 			masterKey: CENOTE_MASTER_KEY,
-			event_collection: "test",
+			event_collection: eventCollection,
 		};
 		const response = await got.get(`/projects/${PROJECT_ID}/queries/percentile`, { query });
 		expect(response.statusCode).toBe(400);
@@ -55,7 +69,7 @@ describe("Test /percentile route", () => {
 	test("can calculate correct percentile value", async () => {
 		const query = {
 			masterKey: CENOTE_MASTER_KEY,
-			event_collection: "test",
+			event_collection: eventCollection,
 			target_property: "a",
 			percentile: 100,
 		};
@@ -68,7 +82,7 @@ describe("Test /percentile route", () => {
 	test("query measurements with existing group_by property", async () => {
 		const query = {
 			masterKey: CENOTE_MASTER_KEY,
-			event_collection: "test",
+			event_collection: eventCollection,
 			target_property: "a",
 			percentile: 100,
 			group_by: "c",
@@ -83,7 +97,7 @@ describe("Test /percentile route", () => {
 	test("query measurements with non-existing group_by property fails", async () => {
 		const query = {
 			masterKey: CENOTE_MASTER_KEY,
-			event_collection: "test",
+			event_collection: eventCollection,
 			target_property: "a",
 			percentile: 100,
 			group_by: "blabla",
@@ -96,7 +110,7 @@ describe("Test /percentile route", () => {
 	test("query measurements with specific interval property", async () => {
 		const query = {
 			masterKey: CENOTE_MASTER_KEY,
-			event_collection: "test",
+			event_collection: eventCollection,
 			target_property: "a",
 			percentile: 100,
 			interval: "minutely",
@@ -111,7 +125,7 @@ describe("Test /percentile route", () => {
 	test("query measurements with invalid interval property fails", async () => {
 		const query = {
 			masterKey: CENOTE_MASTER_KEY,
-			event_collection: "test",
+			event_collection: eventCollection,
 			target_property: "a",
 			percentile: 100,
 			interval: "blabla",
@@ -125,7 +139,7 @@ describe("Test /percentile route", () => {
 	test("query measurements with filter property (1)", async () => {
 		const query = {
 			masterKey: CENOTE_MASTER_KEY,
-			event_collection: "test",
+			event_collection: eventCollection,
 			target_property: "a",
 			percentile: 100,
 			filters: JSON.stringify([{ property_name: "a", operator: "gte", property_value: (NUM_OF_DOCS / 2) }]),
@@ -139,7 +153,7 @@ describe("Test /percentile route", () => {
 	test("query measurements with filter property (2)", async () => {
 		const query = {
 			masterKey: CENOTE_MASTER_KEY,
-			event_collection: "test",
+			event_collection: eventCollection,
 			target_property: "a",
 			percentile: 100,
 			filters: JSON.stringify([
@@ -156,7 +170,7 @@ describe("Test /percentile route", () => {
 	test("query measurements with filter property (3)", async () => {
 		const query = {
 			masterKey: CENOTE_MASTER_KEY,
-			event_collection: "test",
+			event_collection: eventCollection,
 			target_property: "a",
 			percentile: 100,
 			filters: JSON.stringify([

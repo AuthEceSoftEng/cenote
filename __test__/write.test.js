@@ -2,16 +2,30 @@ const got = require("got").extend({ baseUrl: process.env.CENOTE_API_URL, json: t
 const delay = require("delay").createWithTimers({ clearTimeout, setTimeout });
 
 const { PROJECT_ID, CENOTE_MASTER_KEY } = process.env;
+const eventCollection = "write";
 
-describe("Test writing functionality", () => {
+describe("Test write functionality", () => {
+	afterAll(async () => {
+		const query = {
+			eventCollection,
+		};
+		const response = await got.delete(`/projects/${PROJECT_ID}/queries/testCleanup`, { query });
+		if (response.statusCode === 400) {
+			expect(response.body.ok).toBe(false);
+			expect(response.body.results).toBe("BadQueryError");
+		} else {
+			expect(response.statusCode).toBe(204);
+		}
+	}, 30000);
+
 	test("500 new measurements should be written at most after 10 seconds.", async () => {
 		const payload = [];
 		for (let i = 1; i < 501; i += 1) payload.push({ data: { a: i, b: i, c: i.toString() } });
 		const body = { payload };
-		const response = await got.post(`/projects/${PROJECT_ID}/events/test?masterKey=${CENOTE_MASTER_KEY}`, { body });
+		const response = await got.post(`/projects/${PROJECT_ID}/events/${eventCollection}?masterKey=${CENOTE_MASTER_KEY}`, { body });
 		expect(response.statusCode).toBe(202);
 		expect(response.body.message).toBe("Events sent!");
-		const query = { masterKey: CENOTE_MASTER_KEY, event_collection: "test" };
+		const query = { masterKey: CENOTE_MASTER_KEY, event_collection: eventCollection };
 		await delay(10 * 1000);
 		const { count } = (await got.get(`/projects/${PROJECT_ID}/queries/count`, { query })).body.results[0];
 		expect(count).toBe(500);
@@ -28,7 +42,7 @@ describe("Test writing functionality", () => {
 	test("Writing events with special characters in their keys fails", async () => {
 		const payload = [{ data: { a: 0, b: 0, c: { d: { e: { nApo: "66" } } } } }];
 		const body = { payload };
-		const response = await got.post(`/projects/${PROJECT_ID}/events/test?masterKey=${CENOTE_MASTER_KEY}`, { body });
+		const response = await got.post(`/projects/${PROJECT_ID}/events/${eventCollection}?masterKey=${CENOTE_MASTER_KEY}`, { body });
 		expect(response.statusCode).toBe(400);
 		expect(response.body.error).toBe("InvalidPropertyNameError");
 	});

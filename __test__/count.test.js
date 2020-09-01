@@ -31,7 +31,7 @@ describe("Test /count route", () => {
 			({ count } = (await got.get(`/projects/${PROJECT_ID}/queries/count`, { query })).body.results[0]);
 		}
 		expect(count).toBe(NUM_OF_DOCS);
-	}, 30000);
+	}, 100 * 1000);
 
 	test(`count ${NUM_OF_DOCS} measurements from collection ’${eventCollection}’`, async () => {
 		const query = {

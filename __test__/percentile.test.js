@@ -16,7 +16,7 @@ describe("Test /percentile route", () => {
 		} else {
 			expect(response.statusCode).toBe(204);
 		}
-	}, 30000);
+	}, 100 * 1000);
 
 	test(`add ${NUM_OF_DOCS} measurements to collection ’${eventCollection}’`, async () => {
 		const payload = [];

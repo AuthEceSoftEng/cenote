@@ -16,7 +16,7 @@ describe("Test write functionality", () => {
 		} else {
 			expect(response.statusCode).toBe(204);
 		}
-	}, 30000);
+	}, 100 * 1000);
 
 	test("500 new measurements should be written at most after 10 seconds.", async () => {
 		const payload = [];

@@ -4,6 +4,16 @@ const { PROJECT_ID, CENOTE_MASTER_KEY } = process.env;
 const { NUM_OF_DOCS } = global;
 
 describe("Test /maximum route", () => {
+	afterAll(async () => {
+		const response = await got.delete(`/projects/${PROJECT_ID}/queries/testCleanup`);
+		if (response.statusCode === 400) {
+			expect(response.body.ok).toBe(false);
+			expect(response.body.results).toBe("BadQueryError");
+		} else {
+			expect(response.statusCode).toBe(204);
+		}
+	}, 20 * 1000);
+
 	test(`add ${NUM_OF_DOCS} measurements to collection ’test’`, async () => {
 		const payload = [];
 		for (let i = 1; i < NUM_OF_DOCS + 1; i += 1) payload.push({ data: { a: i, b: i, c: i.toString() } });

@@ -4,6 +4,16 @@ const delay = require("delay").createWithTimers({ clearTimeout, setTimeout });
 const { PROJECT_ID, CENOTE_MASTER_KEY } = process.env;
 
 describe("Test writing functionality", () => {
+	afterAll(async () => {
+		const response = await got.delete(`/projects/${PROJECT_ID}/queries/testCleanup`);
+		if (response.statusCode === 400) {
+			expect(response.body.ok).toBe(false);
+			expect(response.body.results).toBe("BadQueryError");
+		} else {
+			expect(response.statusCode).toBe(204);
+		}
+	}, 20 * 1000);
+
 	test("500 new measurements should be written at most after 10 seconds.", async () => {
 		const payload = [];
 		for (let i = 1; i < 501; i += 1) payload.push({ data: { a: i, b: i, c: i.toString() } });

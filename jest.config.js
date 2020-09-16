@@ -1,4 +1,4 @@
 module.exports = {
-	setupFilesAfterEnv: ["<rootDir>/__test__/setup.js"],
+	setupFiles: ["<rootDir>/__test__/beforejest.js"],
 	verbose: true,
 };

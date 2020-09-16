@@ -4,11 +4,11 @@ const { PROJECT_ID, CENOTE_MASTER_KEY, EERIS_EVENT_COLLECTION } = process.env;
 const { NUM_OF_DOCS } = global;
 
 describe("Test /eeris route", () => {
-	afterAll(async () => {
+	beforeAll(async () => {
 		const query = {
 			eventCollection: EERIS_EVENT_COLLECTION,
 		};
-		const response = await got.delete(`/projects/${PROJECT_ID}/queries/testCleanup`, { query });
+		const response = await got.delete(`/projects/${PROJECT_ID}/queries/eerisTestCleanup`, { query });
 		if (response.statusCode === 400) {
 			expect(response.body.ok).toBe(false);
 			expect(response.body.results).toBe("BadQueryError");

@@ -10,7 +10,7 @@ const median = (arr) => {
 };
 
 describe("Test /median route", () => {
-	afterAll(async () => {
+	beforeAll(async () => {
 		const response = await got.delete(`/projects/${PROJECT_ID}/queries/testCleanup`);
 		if (response.statusCode === 400) {
 			expect(response.body.ok).toBe(false);

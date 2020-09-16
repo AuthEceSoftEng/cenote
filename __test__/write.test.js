@@ -4,7 +4,7 @@ const delay = require("delay").createWithTimers({ clearTimeout, setTimeout });
 const { PROJECT_ID, CENOTE_MASTER_KEY } = process.env;
 
 describe("Test writing functionality", () => {
-	afterAll(async () => {
+	beforeAll(async () => {
 		const response = await got.delete(`/projects/${PROJECT_ID}/queries/testCleanup`);
 		if (response.statusCode === 400) {
 			expect(response.body.ok).toBe(false);

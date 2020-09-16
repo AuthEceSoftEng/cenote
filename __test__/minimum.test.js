@@ -16,7 +16,7 @@ describe("Test /minimum route", () => {
 		} else {
 			expect(response.statusCode).toBe(204);
 		}
-	}, 100 * 1000);
+	}, 30000);
 
 	test(`add ${NUM_OF_DOCS} measurements to collection ’${eventCollection}’`, async () => {
 		const payload = [];

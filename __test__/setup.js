@@ -13,4 +13,4 @@ afterAll(async () => {
 	} else {
 		expect(response.statusCode).toBe(204);
 	}
-}, 50000);
+}, 10000);

@@ -15,7 +15,7 @@ describe("Test /eeris route", () => {
 		} else {
 			expect(response.statusCode).toBe(204);
 		}
-	}, 30000);
+	}, 10000);
 
 	test(`add ${NUM_OF_DOCS} measurements to collection ${EERIS_EVENT_COLLECTION}`, async () => {
 		const payload = [];

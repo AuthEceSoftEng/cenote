@@ -22,7 +22,7 @@ describe("Test /eeris route", () => {
 		for (let i = 1; i < NUM_OF_DOCS + 1; i += 1) {
 			payload.push({
 				data: {
-					a: i,
+					active: i,
 					b: i,
 					c: i.toString(),
 				},
@@ -39,14 +39,14 @@ describe("Test /eeris route", () => {
 			({ count } = (await got.get(`/projects/${PROJECT_ID}/queries/count`, { query })).body.results[0]);
 		}
 		expect(count).toBe(NUM_OF_DOCS);
-	}, 30 * 1000);
+	}, 20 * 1000);
 
 	test("query without specifying target_property property fails", async () => {
 		const query = {
 			masterKey: CENOTE_MASTER_KEY,
 			event_collection: EERIS_EVENT_COLLECTION,
 		};
-		const response = await got.get(`/projects/${PROJECT_ID}/queries/eeris`, { query });
+		const response = await got.get(`/projects/${PROJECT_ID}/queries/eeris/historical`, { query });
 		expect(response.statusCode).toBe(400);
 		expect(response.body.ok).toBe(false);
 		expect(response.body.results).toBe("TargetNotProvidedError");
@@ -58,7 +58,7 @@ describe("Test /eeris route", () => {
 			event_collection: "blabla",
 			target_property: "a",
 		};
-		const response = await got.get(`/projects/${PROJECT_ID}/queries/eeris`, { query });
+		const response = await got.get(`/projects/${PROJECT_ID}/queries/eeris/historical`, { query });
 		expect(response.statusCode).toBe(400);
 		expect(response.body.ok).toBe(false);
 	});
@@ -72,17 +72,15 @@ describe("Test /eeris route", () => {
 		const query = {
 			masterKey: CENOTE_MASTER_KEY,
 			event_collection: EERIS_EVENT_COLLECTION,
-			target_property: "a",
+			target_property: "active",
 			type: "week",
 		};
-		const response = await got.get(`/projects/${PROJECT_ID}/queries/eeris`, { query });
+		const response = await got.get(`/projects/${PROJECT_ID}/queries/eeris/historical`, { query });
 
 		expect(response.statusCode).toBe(200);
 		expect(response.body.ok).toBe(true);
 		expect(response.body.results.values.length).toBe(7);
 		expect(response.body.results.values[6]).toBe(avg);
-		expect(response.body.results.stats.max).toBe(NUM_OF_DOCS);
-		expect(response.body.results.stats.min).toBe(1);
 		expect(response.body.results.stats.avg).toBe(avg);
 	});
 
@@ -95,16 +93,14 @@ describe("Test /eeris route", () => {
 		const query = {
 			masterKey: CENOTE_MASTER_KEY,
 			event_collection: EERIS_EVENT_COLLECTION,
-			target_property: "a",
+			target_property: "active",
 			type: "month",
 		};
-		const response = await got.get(`/projects/${PROJECT_ID}/queries/eeris`, { query });
+		const response = await got.get(`/projects/${PROJECT_ID}/queries/eeris/historical`, { query });
 		expect(response.statusCode).toBe(200);
 		expect(response.body.ok).toBe(true);
 		expect(response.body.results.values.length).toBe(new Date().getDate());
 		expect(response.body.results.values[new Date().getDate() - 1]).toBe(avg);
-		expect(response.body.results.stats.max).toBe(NUM_OF_DOCS);
-		expect(response.body.results.stats.min).toBe(1);
 		expect(response.body.results.stats.avg).toBe(avg);
 	});
 
@@ -123,18 +119,16 @@ describe("Test /eeris route", () => {
 		const query = {
 			masterKey: CENOTE_MASTER_KEY,
 			event_collection: EERIS_EVENT_COLLECTION,
-			target_property: "a",
+			target_property: "active",
 			type: "day",
 			dt: dateString,
 		};
-		const response = await got.get(`/projects/${PROJECT_ID}/queries/eeris`, { query });
+		const response = await got.get(`/projects/${PROJECT_ID}/queries/eeris/historical`, { query });
 
 		expect(response.statusCode).toBe(200);
 		expect(response.body.ok).toBe(true);
 		expect(response.body.results.values.length).toBe(24);
 		expect(response.body.results.values[hours + offsetCI]).toBe(avg);
-		expect(response.body.results.stats.max).toBe(NUM_OF_DOCS);
-		expect(response.body.results.stats.min).toBe(1);
 		expect(response.body.results.stats.avg).toBe(avg);
 	});
 });

@@ -114,7 +114,7 @@ describe("Test /eeris route", () => {
 		const month = `0${new Date().getMonth() + 1}`.slice(-2);
 		const day = `0${new Date().getDate()}`.slice(-2);
 		const hours = new Date().getHours();
-		const offsetCI = process.env.CI ? 3 : 0;
+		const offsetCI = process.env.CI ? process.env.CI : 0;
 		const dateString = `${year}-${month}-${day}`;
 		const query = {
 			masterKey: CENOTE_MASTER_KEY,
